@@ -59,25 +59,20 @@ pub struct Switch {
 
     /// A pointer to the Objective-C runtime center Y layout constraint.
     #[cfg(feature = "autolayout")]
-    pub center_y: LayoutAnchorY
+    pub center_y: LayoutAnchorY,
 }
 
 impl Switch {
     /// Creates a new `NSSwitch` instance, configures it appropriately,
     /// and retains the necessary Objective-C runtime pointer.
-    pub fn new(text: &str) -> Self {
-        let title = NSString::new(text);
-
+    pub fn new() -> Self {
         let view: id = unsafe {
-            let button: id = msg_send![register_class(), buttonWithTitle: &*title, target: nil, action: nil];
+            let switch: id = msg_send![register_class(), new];
 
             #[cfg(feature = "autolayout")]
-            let _: () = msg_send![button, setTranslatesAutoresizingMaskIntoConstraints: NO];
+            let _: () = msg_send![switch, setTranslatesAutoresizingMaskIntoConstraints: NO];
 
-            #[cfg(feature = "appkit")]
-            let _: () = msg_send![button, setButtonType:3];
-
-            button
+            switch
         };
 
         Switch {
@@ -112,12 +107,12 @@ impl Switch {
             center_x: LayoutAnchorX::center(view),
 
             #[cfg(feature = "autolayout")]
-            center_y: LayoutAnchorY::center(view)
+            center_y: LayoutAnchorY::center(view),
         }
     }
 
     /// Sets whether this is checked on or off.
-    pub fn set_checked(&mut self, checked: bool) {
+    pub fn set_switch(&mut self, checked: bool) {
         self.objc.with_mut(|obj| unsafe {
             // @TODO: The constants to use here changed back in 10.13ish, so... do we support that,
             // or just hide it?
@@ -173,5 +168,5 @@ impl Drop for Switch {
 /// Registers an `NSButton` subclass, and configures it to hold some ivars
 /// for various things we need to store.
 fn register_class() -> &'static Class {
-    load_or_register_class("NSButton", "RSTSwitch", |decl| unsafe {})
+    load_or_register_class("NSSwitch", "RSTSwitch", |decl| unsafe {})
 }
