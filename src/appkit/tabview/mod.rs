@@ -78,6 +78,8 @@ impl TabView {
         unsafe {
             let tab_view = msg_send![class!(NSTabView), new];
 
+            let _: () = msg_send![tab_view, setTranslatesAutoresizingMaskIntoConstraints: false];
+
             Self {
                 objc: ObjcProperty::retain(tab_view),
                 objc_delegate: RefCell::new(None),
