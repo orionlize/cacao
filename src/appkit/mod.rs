@@ -30,3 +30,4 @@ pub mod window;
 
 pub mod haptics;
 pub mod segmentedcontrol;
+pub mod tabview;
