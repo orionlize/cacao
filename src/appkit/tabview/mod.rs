@@ -9,10 +9,14 @@ use objc::{
     runtime::Object,
 };
 
+#[cfg(feature = "autolayout")]
+use crate::appkit::tabview;
 use crate::appkit::tabview::{class::register_tabview_class, traits::TabViewDelegate};
 use crate::color::Color;
 use crate::foundation::{id, nil};
 use crate::layout::Layout;
+#[cfg(feature = "autolayout")]
+use crate::layout::{LayoutAnchorDimension, LayoutAnchorX, LayoutAnchorY};
 use crate::objc_access::ObjcAccess;
 use crate::utils::properties::ObjcProperty;
 use crate::view::BACKGROUND_COLOR;
@@ -28,20 +32,85 @@ pub struct TabView {
     /// The Objective-C runtime toolbar.
     pub objc: ObjcProperty,
     objc_delegate: RefCell<Option<Id<Object, Owned>>>,
+    /// A pointer to the Objective-C runtime top layout constraint.
+    #[cfg(feature = "autolayout")]
+    pub top: LayoutAnchorY,
+
+    /// A pointer to the Objective-C runtime leading layout constraint.
+    #[cfg(feature = "autolayout")]
+    pub leading: LayoutAnchorX,
+
+    /// A pointer to the Objective-C runtime left layout constraint.
+    #[cfg(feature = "autolayout")]
+    pub left: LayoutAnchorX,
+
+    /// A pointer to the Objective-C runtime trailing layout constraint.
+    #[cfg(feature = "autolayout")]
+    pub trailing: LayoutAnchorX,
+
+    /// A pointer to the Objective-C runtime right layout constraint.
+    #[cfg(feature = "autolayout")]
+    pub right: LayoutAnchorX,
+
+    /// A pointer to the Objective-C runtime bottom layout constraint.
+    #[cfg(feature = "autolayout")]
+    pub bottom: LayoutAnchorY,
+
+    /// A pointer to the Objective-C runtime width layout constraint.
+    #[cfg(feature = "autolayout")]
+    pub width: LayoutAnchorDimension,
+
+    /// A pointer to the Objective-C runtime height layout constraint.
+    #[cfg(feature = "autolayout")]
+    pub height: LayoutAnchorDimension,
+
+    /// A pointer to the Objective-C runtime center X layout constraint.
+    #[cfg(feature = "autolayout")]
+    pub center_x: LayoutAnchorX,
+
+    /// A pointer to the Objective-C runtime center Y layout constraint.
+    #[cfg(feature = "autolayout")]
+    pub center_y: LayoutAnchorY,
 }
 
 impl TabView {
     pub fn new() -> Self {
-        let objc = unsafe {
-            let tabview = msg_send![class!(NSTabView), new];
+        unsafe {
+            let tab_view = msg_send![class!(NSTabView), new];
 
-            ObjcProperty::retain(tabview)
-        };
+            Self {
+                objc: ObjcProperty::retain(tab_view),
+                objc_delegate: RefCell::new(None),
+                #[cfg(feature = "autolayout")]
+                top: LayoutAnchorY::top(tab_view),
 
-        Self {
-            objc,
+                #[cfg(feature = "autolayout")]
+                left: LayoutAnchorX::left(tab_view),
 
-            objc_delegate: RefCell::new(None),
+                #[cfg(feature = "autolayout")]
+                leading: LayoutAnchorX::leading(tab_view),
+
+                #[cfg(feature = "autolayout")]
+                right: LayoutAnchorX::right(tab_view),
+
+                #[cfg(feature = "autolayout")]
+                trailing: LayoutAnchorX::trailing(tab_view),
+
+                #[cfg(feature = "autolayout")]
+                bottom: LayoutAnchorY::bottom(tab_view),
+
+                #[cfg(feature = "autolayout")]
+                width: LayoutAnchorDimension::width(tab_view),
+
+                #[cfg(feature = "autolayout")]
+                height: LayoutAnchorDimension::height(tab_view),
+
+                #[cfg(feature = "autolayout")]
+                center_x: LayoutAnchorX::center(tab_view),
+
+                #[cfg(feature = "autolayout")]
+                center_y: LayoutAnchorY::center(tab_view),
+            }
         }
     }
 }
