@@ -5,6 +5,7 @@ use objc::rc::{Id, Shared};
 use objc::runtime::{Class, Object};
 use objc::{msg_send, msg_send_id, sel};
 
+use crate::control::Control;
 use crate::foundation::{id, load_or_register_class, nil, NSString, NO};
 use crate::invoker::TargetActionHandler;
 use crate::layout::Layout;
@@ -153,6 +154,8 @@ impl Layout for Switch {
         );
     }
 }
+
+impl Control for Switch {}
 
 impl Drop for Switch {
     // Just to be sure, let's... nil these out. They should be weak references,
