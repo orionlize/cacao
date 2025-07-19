@@ -113,8 +113,8 @@ impl Switch {
     }
 
     /// Sets whether this is checked on or off.
-    pub fn set_switch(&mut self, checked: bool) {
-        self.objc.with_mut(|obj| unsafe {
+    pub fn set_switch(&self, checked: bool) {
+        self.objc.get(|obj| unsafe {
             // @TODO: The constants to use here changed back in 10.13ish, so... do we support that,
             // or just hide it?
             let _: () = msg_send![obj, setState:match checked {
