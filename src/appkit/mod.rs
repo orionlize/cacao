@@ -29,5 +29,8 @@ pub mod toolbar;
 pub mod window;
 
 pub mod haptics;
+mod secure_input;
 pub mod segmentedcontrol;
 pub mod tabview;
+
+pub use secure_input::SecureTextField;

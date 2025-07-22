@@ -1,10 +1,10 @@
 //! Various traits used for Labels.
 
-use crate::input::SecureTextField;
+use super::SecureTextField;
 
 /// This trait can be used for implementing custom text field behavior.
 #[allow(unused_variables)]
-pub trait TextFieldDelegate {
+pub trait SecureTextFieldDelegate {
     /// Used to cache subclass creations on the Objective-C side.
     /// You can just set this to be the name of your view type. This
     /// value *must* be unique per-type.

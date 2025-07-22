@@ -1,6 +1,6 @@
 use std::sync::RwLock;
 
-use cacao::input::{TextField, TextFieldDelegate};
+use cacao::input::{SecureTextField, TextFieldDelegate};
 use cacao::text::{Label, TextAlign};
 use cacao::uikit::{App, AppDelegate, Scene, SceneConfig, SceneConnectionOptions, SceneSession, Window, WindowSceneDelegate};
 
@@ -47,7 +47,7 @@ pub struct RootView {
     pub blue: View,
     pub label: Label,
     pub image: ImageView,
-    pub input: TextField<ConsoleLogger>
+    pub input: SecureTextField<ConsoleLogger>,
 }
 
 impl Default for RootView {
@@ -57,7 +57,7 @@ impl Default for RootView {
             blue: View::new(),
             label: Label::new(),
             image: ImageView::new(),
-            input: TextField::with(ConsoleLogger("input_1".to_string()))
+            input: SecureTextField::with(ConsoleLogger("input_1".to_string())),
         }
     }
 }
@@ -104,7 +104,7 @@ impl ViewDelegate for RootView {
             self.blue.trailing.constraint_equal_to(&view.trailing).offset(-16.),
             self.blue.bottom.constraint_equal_to(&view.bottom).offset(-16.),
             self.image.center_x.constraint_equal_to(&self.blue.center_x),
-            self.image.center_y.constraint_equal_to(&self.blue.center_y)
+            self.image.center_y.constraint_equal_to(&self.blue.center_y),
         ]);
     }
 }
@@ -112,7 +112,7 @@ impl ViewDelegate for RootView {
 #[derive(Default)]
 pub struct WindowScene {
     pub window: RwLock<Option<Window>>,
-    pub root_view_controller: RwLock<Option<ViewController<RootView>>>
+    pub root_view_controller: RwLock<Option<ViewController<RootView>>>,
 }
 
 impl WindowSceneDelegate for WindowScene {

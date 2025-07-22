@@ -73,9 +73,9 @@ mod uikit;
 use uikit::{register_view_class, register_view_class_with_delegate};
 
 mod traits;
-pub use traits::TextFieldDelegate;
+pub use traits::SecureTextFieldDelegate;
 
-pub(crate) static TEXTFIELD_DELEGATE_PTR: &str = "rstTextFieldDelegatePtr";
+pub(crate) static SECURE_TEXTFIELD_DELEGATE_PTR: &str = "rstSecureTextFieldDelegatePtr";
 
 /// A helper method for instantiating view classes and applying default settings to them.
 fn common_init(class: &Class) -> id {
@@ -194,7 +194,7 @@ impl SecureTextField {
 
 impl<T> SecureTextField<T>
 where
-    T: TextFieldDelegate + 'static,
+    T: SecureTextFieldDelegate + 'static,
 {
     /// Initializes a new TextField with a given `TextFieldDelegate`. This enables you to respond to events
     /// and customize the view as a module, similar to class-based systems.
@@ -205,7 +205,7 @@ where
         let input = common_init(class);
         unsafe {
             let ptr: *const T = &*delegate;
-            (&mut *input).set_ivar(TEXTFIELD_DELEGATE_PTR, ptr as usize);
+            (&mut *input).set_ivar(SECURE_TEXTFIELD_DELEGATE_PTR, ptr as usize);
         };
         #[cfg(feature = "uikit")]
         let _: () = unsafe { msg_send![input, setDelegate: input] };
