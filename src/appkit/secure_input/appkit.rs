@@ -42,7 +42,7 @@ extern "C" fn text_should_end_editing<T: SecureTextFieldDelegate>(this: &Object,
 /// have separate classes here since we don't want to waste cycles on methods that will never be
 /// used if there's no delegates.
 pub(crate) fn register_view_class() -> &'static Class {
-    load_or_register_class("NSTextField", "RSTTextInputField", |decl| unsafe {})
+    load_or_register_class("NSSecureTextField", "RSTSecureTextInputField", |decl| unsafe {})
 }
 
 /// Injects an `NSTextField` subclass, with some callback and pointer ivars for what we
