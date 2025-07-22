@@ -19,7 +19,7 @@ impl Default for ToggleOptionView {
     fn default() -> Self {
         let view = View::new();
 
-        let switch = Switch::new("");
+        let switch = Switch::new();
         view.add_subview(&switch);
 
         let title = Label::new();

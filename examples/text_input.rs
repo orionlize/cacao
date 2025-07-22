@@ -1,7 +1,7 @@
 //! This example showcases setting up a basic application and window, setting up some views to
 //! work with autolayout, and some basic ways to handle colors.
 
-use cacao::input::{SecureTextField, TextFieldDelegate};
+use cacao::input::{TextField, TextFieldDelegate};
 use cacao::layout::{Layout, LayoutConstraint};
 use cacao::view::View;
 
@@ -86,14 +86,14 @@ impl TextFieldDelegate for ConsoleLogger {
 
 #[derive(Debug)]
 struct AppWindow {
-    input: SecureTextField<ConsoleLogger>,
+    input: TextField<ConsoleLogger>,
     content: View,
 }
 
 impl AppWindow {
     pub fn new() -> Self {
         AppWindow {
-            input: SecureTextField::with(ConsoleLogger),
+            input: TextField::with(ConsoleLogger),
             content: View::new(),
         }
     }

@@ -1,6 +1,6 @@
 //! Various traits used for Labels.
 
-use crate::input::SecureTextField;
+use crate::input::TextField;
 
 /// This trait can be used for implementing custom text field behavior.
 #[allow(unused_variables)]
@@ -18,7 +18,7 @@ pub trait TextFieldDelegate {
 
     /// Called when the text field is loaded. You're passed a reference to the underlying text
     /// field for future local use.
-    fn did_load(&mut self, view: SecureTextField) {}
+    fn did_load(&mut self, view: TextField) {}
 
     /// Posts a notification when the text is no longer in edit mode.
     fn text_did_end_editing(&self, value: &str) {}

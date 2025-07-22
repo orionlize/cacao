@@ -11,14 +11,14 @@ use cacao::text::Label;
 use cacao::view::{View, ViewDelegate};
 
 use cacao::button::Button;
-use cacao::input::SecureTextField;
+use cacao::input::TextField;
 
 use crate::storage::{dispatch_ui, Message};
 
 #[derive(Debug, Default)]
 pub struct AddNewTodoContentView {
     pub view: Option<View>,
-    pub input: Option<SecureTextField>,
+    pub input: Option<TextField>,
     pub button: Option<Button>,
 }
 
@@ -46,7 +46,7 @@ impl ViewDelegate for AddNewTodoContentView {
         let instructions = Label::new();
         instructions.set_text("Let's be real: we both know this task isn't getting done.");
 
-        let input = SecureTextField::new();
+        let input = TextField::new();
 
         let mut button = Button::new("Add");
         button.set_key_equivalent("\r");
