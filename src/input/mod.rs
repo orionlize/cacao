@@ -95,7 +95,7 @@ fn common_init(class: &Class) -> id {
 /// A clone-able handler to an `NSTextField/UITextField` reference in the
 /// Objective-C runtime.
 #[derive(Debug)]
-pub struct SecureTextField<T = ()> {
+pub struct TextField<T = ()> {
     /// A pointer to the Objective-C runtime view controller.
     pub objc: ObjcProperty,
 
@@ -143,19 +143,19 @@ pub struct SecureTextField<T = ()> {
     pub center_y: LayoutAnchorY,
 }
 
-impl Default for SecureTextField {
+impl Default for TextField {
     fn default() -> Self {
-        SecureTextField::new()
+        TextField::new()
     }
 }
 
-impl SecureTextField {
+impl TextField {
     /// Returns a default `TextField`, suitable for
     pub fn new() -> Self {
         let class = register_view_class();
         let view = common_init(class);
 
-        SecureTextField {
+        TextField {
             delegate: None,
             objc: ObjcProperty::retain(view),
 
@@ -192,13 +192,13 @@ impl SecureTextField {
     }
 }
 
-impl<T> SecureTextField<T>
+impl<T> TextField<T>
 where
     T: TextFieldDelegate + 'static,
 {
     /// Initializes a new TextField with a given `TextFieldDelegate`. This enables you to respond to events
     /// and customize the view as a module, similar to class-based systems.
-    pub fn with(delegate: T) -> SecureTextField<T> {
+    pub fn with(delegate: T) -> TextField<T> {
         let class = register_view_class_with_delegate(&delegate);
         let mut delegate = Box::new(delegate);
 
@@ -210,7 +210,7 @@ where
         #[cfg(feature = "uikit")]
         let _: () = unsafe { msg_send![input, setDelegate: input] };
 
-        let mut input = SecureTextField {
+        let mut input = TextField {
             delegate: None,
             objc: ObjcProperty::retain(input),
 
@@ -251,13 +251,13 @@ where
     }
 }
 
-impl<T> SecureTextField<T> {
+impl<T> TextField<T> {
     /// An internal method that returns a clone of this object, sans references to the delegate or
     /// callback pointer. We use this in calling `did_load()` - implementing delegates get a way to
     /// reference, customize and use the view but without the trickery of holding pieces of the
     /// delegate - the `TextField` is the only true holder of those.
-    pub(crate) fn clone_as_handle(&self) -> SecureTextField {
-        SecureTextField {
+    pub(crate) fn clone_as_handle(&self) -> TextField {
+        TextField {
             delegate: None,
             objc: self.objc.clone(),
 
@@ -388,7 +388,7 @@ impl<T> SecureTextField<T> {
     }
 }
 
-impl<T> ObjcAccess for SecureTextField<T> {
+impl<T> ObjcAccess for TextField<T> {
     fn with_backing_obj_mut<F: Fn(id)>(&self, handler: F) {
         self.objc.with_mut(handler);
     }
@@ -398,11 +398,11 @@ impl<T> ObjcAccess for SecureTextField<T> {
     }
 }
 
-impl<T> Layout for SecureTextField<T> {}
+impl<T> Layout for TextField<T> {}
 
-impl<T> Control for SecureTextField<T> {}
+impl<T> Control for TextField<T> {}
 
-impl<T> Drop for SecureTextField<T> {
+impl<T> Drop for TextField<T> {
     /// A bit of extra cleanup for delegate callback pointers. If the originating `TextField` is being
     /// dropped, we do some logic to clean it all up (e.g, we go ahead and check to see if
     /// this has a superview (i.e, it's in the heirarchy) on the AppKit side. If it does, we go
@@ -423,7 +423,7 @@ impl<T> Drop for SecureTextField<T> {
 
 #[test]
 fn test_text_view() {
-    let text_field = SecureTextField::new();
+    let text_field = TextField::new();
     let value = text_field.get_value();
     assert!(value.is_empty());
     text_field.set_background_color(Color::SystemBlue);
