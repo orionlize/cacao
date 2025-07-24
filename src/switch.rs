@@ -124,6 +124,13 @@ impl Switch {
         });
     }
 
+    pub fn state(&self) -> bool {
+        self.objc.get(|obj| unsafe {
+            let state: i32 = msg_send![obj, state];
+            state == 1
+        })
+    }
+
     /// Attaches a callback for button press events. Don't get too creative now...
     /// best just to message pass or something.
     pub fn set_action<F: Fn(*const Object) + Send + Sync + 'static>(&mut self, action: F) {
